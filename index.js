@@ -11,7 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('combined'));
 app.use('/', router);
 app.use(errorMiddleware);
-app.listen(3000, () => {
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
     console.log(`running on port 3000`);
 });
 
