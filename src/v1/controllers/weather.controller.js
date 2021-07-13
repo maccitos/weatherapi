@@ -4,7 +4,8 @@ dotenv.config();
 export default class WeatherController {
     async getLocation (req, res, next) {
         try {
-            let ip = req.ip;
+            this.getIp(req);
+            let ip = this.getIp(req);
             const location = await this.location(ip);
             return res.jsonp({ response: location });
         } catch (error) {
@@ -18,7 +19,7 @@ export default class WeatherController {
             const weatherAPIKEY = process.env.OPEN_WEATHER_API_KEY
             let { city } = req.params;
             if(!city) {
-                const ip = req.ip;
+                const ip = this.getIp(req);
                 const currentLocation = await this.location(ip);
                 city = currentLocation.city;
             }
@@ -36,7 +37,7 @@ export default class WeatherController {
             const weatherAPIKEY = process.env.OPEN_WEATHER_API_KEY
             let { city } = req.params;
             if(!city) {
-                const ip = req.ip;
+                const ip = this.getIp(req);
                 const currentLocation = await this.location(ip);
                 city = currentLocation.city;
             }
@@ -57,5 +58,15 @@ export default class WeatherController {
         const finalUrl = `${ipApiUrl}/${ip}`;
         const { data: location } = await axios.get(finalUrl);
         return location;
+    }
+
+    getIp(req) {
+        let ipAddr = req.headers["x-forwarded-for"];
+        if (ipAddr){
+            var list = ipAddr.split(",");
+            ipAddr = list[list.length-1];
+        } else {
+            ipAddr = req.connection.remoteAddress;
+        }
     }
 }
