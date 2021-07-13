@@ -63,7 +63,7 @@ export default class WeatherController {
     getIp(req) {
         let ipAddr = req.headers["x-forwarded-for"];
         if (ipAddr){
-            var list = ipAddr.split(",");
+            const list = ipAddr.split(",");
             ipAddr = list[list.length-1];
         } else {
             ipAddr = req.connection.remoteAddress;
