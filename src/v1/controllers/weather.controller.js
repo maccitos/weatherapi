@@ -68,5 +68,6 @@ export default class WeatherController {
         } else {
             ipAddr = req.connection.remoteAddress;
         }
+        return ipAddr;
     }
 }
